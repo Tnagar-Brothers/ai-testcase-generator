@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Test Case Generator</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">QA Automation Toolkit</p>
+            <h1>AI Test Case Generator</h1>
+          </div>
+          <div class="status" id="providerStatus">Checking provider...</div>
+        </header>
+
+        <div class="editor-grid">
+          <section class="panel input-panel">
+            <div class="panel-heading">
+              <h2>User Story / Requirement</h2>
+              <button class="ghost-button" id="sampleButton" type="button">Sample</button>
+            </div>
+            <textarea id="requirement" spellcheck="true" placeholder="Paste Jira story, acceptance criteria, or product requirement here..."></textarea>
+
+            <div class="controls">
+              <label>
+                Domain
+                <input id="domain" type="text" value="Web application" />
+              </label>
+              <label>
+                Risk
+                <select id="riskLevel">
+                  <option>Medium</option>
+                  <option>High</option>
+                  <option>Low</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="toggles">
+              <label><input id="includeGherkin" type="checkbox" checked /> BDD</label>
+              <label><input id="includeEdgeCases" type="checkbox" checked /> Edge cases</label>
+              <label><input id="includeNegative" type="checkbox" checked /> Negative scenarios</label>
+            </div>
+
+            <button class="primary-button" id="generateButton" type="button">Generate Test Cases</button>
+            <p class="message" id="message"></p>
+          </section>
+
+          <section class="panel output-panel">
+            <div class="panel-heading">
+              <h2>Generated Coverage</h2>
+              <div class="actions">
+                <button class="icon-button" id="copyJsonButton" type="button" title="Copy JSON">JSON</button>
+                <button class="icon-button" id="downloadCsvButton" type="button" title="Download CSV">CSV</button>
+                <button class="icon-button" id="downloadFeatureButton" type="button" title="Download Feature">BDD</button>
+              </div>
+            </div>
+
+            <div class="summary" id="summary">Generated test coverage will appear here.</div>
+            <div class="tabs">
+              <button class="tab active" data-tab="cases" type="button">Test Cases</button>
+              <button class="tab" data-tab="gherkin" type="button">Gherkin</button>
+              <button class="tab" data-tab="risks" type="button">Risks</button>
+            </div>
+            <div class="output" id="output"></div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

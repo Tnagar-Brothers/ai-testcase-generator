@@ -1,0 +1,20 @@
+{
+  "name": "ai-testcase-generator",
+  "version": "1.0.0",
+  "description": "AI-powered test case generator for user stories and requirements.",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "qa",
+    "test-cases",
+    "openai",
+    "gemini",
+    "gherkin",
+    "bdd"
+  ],
+  "author": "",
+  "license": "MIT"
+}
