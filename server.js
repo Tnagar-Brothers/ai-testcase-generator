@@ -43,8 +43,11 @@ const server = createServer(async (req, res) => {
 
     return serveStatic(url.pathname, res);
   } catch (error) {
-    console.error(error);
-    sendJson(res, 500, {
+    const status = error instanceof ClientError ? error.status : 500;
+
+    if (status === 500) console.error(error);
+
+    sendJson(res, status, {
       error: "Something went wrong while generating test cases.",
       details: error.message
     });
@@ -81,9 +84,14 @@ async function readJson(req) {
   let raw = "";
   for await (const chunk of req) {
     raw += chunk;
-    if (raw.length > 100_000) throw new Error("Request body is too large.");
+    if (raw.length > 100_000) throw new ClientError("Request body is too large.", 413);
   }
-  return raw ? JSON.parse(raw) : {};
+
+  try {
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    throw new ClientError("Request body must contain valid JSON.");
+  }
 }
 
 async function serveStatic(pathname, res) {
@@ -109,7 +117,7 @@ async function generateTestSuite(input) {
   const options = normalizeOptions(input.options);
 
   if (requirement.length < 20) {
-    throw new Error("Please enter a user story or requirement with at least 20 characters.");
+    throw new ClientError("Please enter a user story or requirement with at least 20 characters.");
   }
 
   const provider = configuredProvider();
@@ -347,4 +355,12 @@ function buildDemoGherkin(title) {
 function sendJson(res, status, payload) {
   res.writeHead(status, { "Content-Type": "application/json; charset=utf-8" });
   res.end(JSON.stringify(payload, null, 2));
+}
+
+class ClientError extends Error {
+  constructor(message, status = 400) {
+    super(message);
+    this.name = "ClientError";
+    this.status = status;
+  }
 }
